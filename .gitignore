@@ -1,0 +1,31 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# UI5
+dist/
+.tmp/
+.versions.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+mta_archives/
+resources/
+.che/
+
+# Fiori Tools
+./**/extended_runnable_file.html
+./**/mock_preview_sapui5.html
+./**/visual_ext_index.html
+fioriHtmlRunner.html
