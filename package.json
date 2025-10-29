@@ -18,8 +18,9 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@sap/ui5-builder-webide-extension": "^1.1.8",
-    "@sap/ux-ui5-tooling": "^1.12.0",
-    "@ui5/cli": "^3.0.0"
+    "@sap/ux-ui5-tooling": "^1.19.3",
+    "@ui5/cli": "^3.11.11",
+    "dotenv": "^17.2.3"
   },
   "ui5": {
     "dependencies": [

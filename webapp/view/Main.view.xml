@@ -1,0 +1,162 @@
+<mvc:View
+    controllerName="com.sap.chatai.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    height="100%"
+    displayBlock="true">
+    
+    <Page
+        id="mainPage"
+        title="Chat AI - Gemini"
+        showHeader="true"
+        enableScrolling="false"
+        class="sapUiSizeCompact">
+        
+        <headerContent>
+            <Button
+                id="btnNewChat"
+                icon="sap-icon://add"
+                text="Nova Conversa"
+                press=".onNewChat"
+                type="Emphasized"/>
+        </headerContent>
+
+        <content>
+            <VBox
+                id="mainLayout"
+                width="100%"
+                class="sapUiContentPadding">
+                
+                <Panel
+                    id="conversationsPanel"
+                    headerText="Minhas Conversas"
+                    expandable="true"
+                    expanded="true"
+                    visible="{= !${view>/currentConversationId} }"
+                    width="100%">
+                    
+                    <List
+                        id="conversationsList"
+                        mode="SingleSelectMaster"
+                        selectionChange=".onConversationSelect">
+                        <StandardListItem
+                            id="emptyConversationItem"
+                            title="Nenhuma conversa ainda"
+                            description="Clique em 'Nova Conversa' para começar"
+                            type="Inactive"
+                            icon="sap-icon://message-information"/>
+                    </List>
+                </Panel>
+
+                <VBox
+                    id="chatArea"
+                    visible="{= !!${view>/currentConversationId} }"
+                    width="100%">
+                    
+                    <Toolbar id="chatToolbar">
+                        <Button
+                            id="btnBack"
+                            icon="sap-icon://nav-back"
+                            press=".onBackToConversations"
+                            tooltip="Voltar"
+                            type="Transparent"/>
+                        <ToolbarSpacer id="toolbarSpacer1"/>
+                        <Title 
+                            id="chatTitle" 
+                            text="Chat com IA Gemini" 
+                            level="H4"/>
+                        <ToolbarSpacer id="toolbarSpacer2"/>
+                        <Button
+                            id="btnDelete"
+                            icon="sap-icon://delete"
+                            press=".onDeleteConversation"
+                            tooltip="Excluir Conversa"
+                            type="Transparent"/>
+                    </Toolbar>
+
+                    <ScrollContainer
+                        id="messagesContainer"
+                        height="500px"
+                        width="100%"
+                        vertical="true"
+                        horizontal="false">
+                        
+                        <VBox 
+                            id="messagesBox"
+                            width="100%">
+                            
+                            <List
+                                id="messagesList"
+                                items="{view>/messages}"
+                                showNoData="false"
+                                showSeparators="None">
+                                <CustomListItem id="customListItemTemplate">
+                                    <FlexBox
+                                        id="messageFlexBox"
+                                        width="100%"
+                                        justifyContent="{= ${view>sender_type} === 'USER' ? 'End' : 'Start' }">
+                                        
+                                        <VBox
+                                            id="messageVBox"
+                                            class="{= ${view>sender_type} === 'USER' ? 'userMessage' : 'aiMessage' }">
+                                            
+                                            <HBox id="messageHeaderBox">
+                                                <core:Icon
+                                                    id="messageIcon"
+                                                    src="{= ${view>sender_type} === 'USER' ? 'sap-icon://person-placeholder' : 'sap-icon://robot' }"
+                                                    size="1rem"
+                                                    color="{= ${view>sender_type} === 'USER' ? 'Default' : 'Critical' }"/>
+                                                <Label 
+                                                    id="messageSenderLabel"
+                                                    text="{= ${view>sender_type} === 'USER' ? 'Você' : 'IA Gemini' }"
+                                                    class="sapUiTinyMarginBegin"/>
+                                            </HBox>
+                                            
+                                            <Text
+                                                id="messageTextContent"
+                                                text="{view>message_text}"
+                                                class="messageText sapUiSmallMarginTop"/>
+                                            
+                                            <Text
+                                                id="messageTimestampText"
+                                                text="{view>timestamp}"
+                                                class="messageTimestamp sapUiTinyMarginTop"/>
+                                        </VBox>
+                                    </FlexBox>
+                                </CustomListItem>
+                            </List>
+
+                        </VBox>
+                    </ScrollContainer>
+
+                    <Toolbar id="inputToolbar">
+                        <TextArea
+                            id="messageInput"
+                            value="{view>/messageText}"
+                            placeholder="Digite sua mensagem..."
+                            rows="2"
+                            width="100%"
+                            growing="true"
+                            maxLength="1000"/>
+                        <Button
+                            id="sendButton"
+                            icon="sap-icon://paper-plane"
+                            type="Emphasized"
+                            press=".onSendMessage"
+                            enabled="{= ${view>/messageText}.length > 0 &amp;&amp; !${view>/isLoading} }"
+                            tooltip="Enviar mensagem"/>
+                    </Toolbar>
+
+                    <BusyIndicator
+                        id="loadingIndicator"
+                        visible="{view>/isLoading}"
+                        text="Processando..."
+                        class="sapUiSmallMarginTop"/>
+
+                </VBox>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

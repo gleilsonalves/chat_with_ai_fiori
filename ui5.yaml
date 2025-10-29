@@ -15,7 +15,7 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false
+        ignoreCertError: true
         ui5:
           path:
             - /resources
@@ -23,8 +23,11 @@ server:
           url: https://sapui5.hana.ondemand.com
         backend:
           - path: /sap
-            url: http://localhost:8000
-            destination: SAP_SYSTEM
+            url: http://74.249.116.248:8001
+            client: "500"
+            authenticationType: BasicAuthentication
+            username: GLEO
+            password: "Glea@1703#"
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
